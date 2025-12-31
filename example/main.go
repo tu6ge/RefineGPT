@@ -29,6 +29,7 @@ func main() {
 	gen := &generator.LLMGenerator{
 		Client:  &MockLLM{},
 		Adapter: generator.NewDefaultPromptAdapter(),
+		Factory: &CandidateFactory{},
 		Schema: `
 {
   "type": "object",

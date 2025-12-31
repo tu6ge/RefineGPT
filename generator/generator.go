@@ -3,7 +3,6 @@ package generator
 import (
 	"context"
 
-	"github.com/tu6ge/RefineGPT/candidate"
 	"github.com/tu6ge/RefineGPT/engine"
 	"github.com/tu6ge/RefineGPT/llm"
 )
@@ -11,6 +10,7 @@ import (
 type LLMGenerator struct {
 	Client  llm.Client
 	Adapter PromptAdapter
+	Factory engine.CandidateFactory
 	Schema  string
 }
 
@@ -28,10 +28,10 @@ func (g *LLMGenerator) Generate(
 		return nil, err
 	}
 
-	output, err := g.Client.Complete(ctx, messages)
+	raw, err := g.Client.Complete(ctx, messages)
 	if err != nil {
 		return nil, err
 	}
 
-	return candidate.NewJSONCandidateFromBytes([]byte(output))
+	return g.Factory.FromLLMOutput(ctx, raw)
 }
