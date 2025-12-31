@@ -27,27 +27,29 @@ func NewComposite(
 
 func (c *CompositeValidator) Validate(
 	ctx context.Context,
+	state engine.State,
 	candidate engine.Candidate,
 ) ([]engine.Feedback, error) {
 
 	switch c.policy.Mode {
 	case ModeParallel:
-		return c.validateParallel(ctx, candidate)
+		return c.validateParallel(ctx, state, candidate)
 	default:
-		return c.validateSequential(ctx, candidate)
+		return c.validateSequential(ctx, state, candidate)
 	}
 }
 
 // 串行模式
 func (c *CompositeValidator) validateSequential(
 	ctx context.Context,
+	state engine.State,
 	candidate engine.Candidate,
 ) ([]engine.Feedback, error) {
 
 	var all []engine.Feedback
 
 	for _, v := range c.validators {
-		feedbacks, err := v.Validate(ctx, candidate)
+		feedbacks, err := v.Validate(ctx, state, candidate)
 		if err != nil {
 			return all, err
 		}
@@ -70,6 +72,7 @@ func (c *CompositeValidator) validateSequential(
 // 并行模式
 func (c *CompositeValidator) validateParallel(
 	ctx context.Context,
+	state engine.State,
 	candidate engine.Candidate,
 ) ([]engine.Feedback, error) {
 
@@ -86,7 +89,7 @@ func (c *CompositeValidator) validateParallel(
 		go func(v engine.Validator) {
 			defer wg.Done()
 
-			feedbacks, err := v.Validate(ctx, candidate)
+			feedbacks, err := v.Validate(ctx, state, candidate)
 
 			mu.Lock()
 			defer mu.Unlock()

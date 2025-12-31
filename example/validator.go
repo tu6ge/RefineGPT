@@ -10,6 +10,7 @@ type ExampleValidator struct{}
 
 func (v *ExampleValidator) Validate(
 	ctx context.Context,
+	state engine.State,
 	c engine.Candidate,
 ) ([]engine.Feedback, error) {
 

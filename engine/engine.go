@@ -21,7 +21,7 @@ func (e *Engine) Run(ctx context.Context, state State) (Candidate, []Feedback, e
 			return nil, history, err
 		}
 
-		feedbacks, err := e.Validator.Validate(ctx, candidate)
+		feedbacks, err := e.Validator.Validate(ctx, state, candidate)
 		if err != nil {
 			return nil, history, err
 		}
