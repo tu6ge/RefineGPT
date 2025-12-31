@@ -11,8 +11,8 @@ type Candidate interface {
 	As(v any) error
 }
 
-type CandidateFactory interface {
-	FromLLMOutput(
+type CandidateParser interface {
+	Parse(
 		ctx context.Context,
 		raw string,
 	) (Candidate, error)

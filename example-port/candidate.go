@@ -44,7 +44,7 @@ func (a *AssignmentList) UnmarshalJSON(data []byte) error {
 
 type CandidateFactory struct{}
 
-func (cf *CandidateFactory) FromLLMOutput(ctx context.Context, raw string) (engine.Candidate, error) {
+func (cf *CandidateFactory) Parse(ctx context.Context, raw string) (engine.Candidate, error) {
 	var obj AssignmentList
 	err := json.Unmarshal([]byte(raw), &obj)
 	if err != nil {

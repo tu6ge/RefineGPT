@@ -6,7 +6,6 @@ import (
 
 	"github.com/tu6ge/RefineGPT/engine"
 	"github.com/tu6ge/RefineGPT/generator"
-	"github.com/tu6ge/RefineGPT/validator"
 )
 
 func main() {
@@ -17,19 +16,11 @@ func main() {
 		Task: "decide whether to allow access",
 	}
 
-	// 2️⃣ Validator（支持以后扩展多个）
-	v := validator.NewComposite(
-		[]engine.Validator{
-			&ExampleValidator{},
-		},
-		validator.DefaultPolicy(),
-	)
-
 	// 3️⃣ Generator
 	gen := &generator.LLMGenerator{
 		Client:  &MockLLM{},
 		Adapter: generator.NewDefaultPromptAdapter(),
-		Factory: &CandidateFactory{},
+		Parser:  &CandidateFactory{},
 		Schema: `
 {
   "type": "object",
@@ -47,7 +38,7 @@ func main() {
 	// 4️⃣ Engine
 	e := &engine.Engine{
 		Generator: gen,
-		Validator: v,
+		Validator: &ExampleValidator{},
 		Policy: engine.LoopPolicy{
 			MaxIteration: 5,
 			StopOnFatal:  true,

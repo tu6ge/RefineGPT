@@ -149,7 +149,7 @@ func main() {
 	gen := &generator.LLMGenerator{
 		Client:  &MockLLM{},
 		Adapter: &DispathPromptAdapter{},
-		Factory: &CandidateFactory{},
+		Parser:  &CandidateFactory{},
 		Schema:  ``,
 	}
 

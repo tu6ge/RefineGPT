@@ -9,7 +9,7 @@ import (
 
 type CandidateFactory struct{}
 
-func (cf *CandidateFactory) FromLLMOutput(ctx context.Context, raw string) (engine.Candidate, error) {
+func (cf *CandidateFactory) Parse(ctx context.Context, raw string) (engine.Candidate, error) {
 	var obj MapCandidate
 	json.Unmarshal([]byte(raw), &obj)
 	return obj, nil

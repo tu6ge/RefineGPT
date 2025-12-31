@@ -10,7 +10,7 @@ import (
 type LLMGenerator struct {
 	Client  llm.Client
 	Adapter PromptAdapter
-	Factory engine.CandidateFactory
+	Parser  engine.CandidateParser
 	Schema  string
 }
 
@@ -33,5 +33,5 @@ func (g *LLMGenerator) Generate(
 		return nil, err
 	}
 
-	return g.Factory.FromLLMOutput(ctx, raw)
+	return g.Parser.Parse(ctx, raw)
 }
