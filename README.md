@@ -65,6 +65,7 @@ By validating LLM-generated decisions with a rule engine and feeding structured 
 
 ## 🔁 Decision Loop
 
+```text
 Start
 ↓
 LLM generates decision (JSON)
@@ -74,6 +75,7 @@ Rule engine validates
 Is decision valid?
 ├── Yes → Return final decision
 └── No  → Return errors → Feed back to LLM → Next iteration
+```
 
 ---
 
